@@ -62,7 +62,7 @@ Feature: Test de API personajes Marvel
     When method delete
     Then status 204
 
-  @id:7 @CrearPersonajeValidarDuplicado
+  @id:7 @CrearPersonaje
   Scenario: Crear un personaje y validar que no se puede duplicar
     * def body = read('classpath:CharacterJson.json')
     Given url urlTest
@@ -75,5 +75,14 @@ Feature: Test de API personajes Marvel
     And request body
     When method post
     Then status 400
+
+  @id:7 @CrearPersonajeDuplicado
+  Scenario: Crear un personaje duplicado y capturar el error
+    * def body = read('classpath:CharacterJson.json')
+    Given url urlTest
+    And request body
+    When method post
+    Then status 400
+    And match response.error == 'Character name already exists'
 
 

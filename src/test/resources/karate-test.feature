@@ -76,7 +76,7 @@ Feature: Test de API personajes Marvel
     When method post
     Then status 400
 
-  @id:7 @CrearPersonajeDuplicado
+  @id:8 @CrearPersonajeDuplicado
   Scenario: Crear un personaje duplicado y capturar el error
     * def body = read('classpath:CharacterJson.json')
     Given url urlTest
@@ -84,5 +84,19 @@ Feature: Test de API personajes Marvel
     When method post
     Then status 400
     And match response.error == 'Character name already exists'
+
+  @id:9 @ValidarCamposVacios
+  Scenario: Validar que no se puede crear un personaje con campos vacíos
+    * def body = read('classpath:CharacterEmptyJson.json')
+    Given url urlTest
+    And request body
+    When method post
+    Then status 400
+    And match response.name == 'Name is required'
+    And match response.description == 'Description is required'
+    And match response.powers == 'Powers are required'
+    And match response.alterego == 'Alterego is required'
+
+
 
 
